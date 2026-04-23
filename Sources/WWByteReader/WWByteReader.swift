@@ -10,8 +10,8 @@ import UIKit
 // MARK: - 無號數Int
 public struct WWByteReader {
     
-    let data: Data
-    var offset: Int = 0
+    public let data: Data
+    public var offset: Int = 0
     
     /// 初始化
     /// - Parameters:
