@@ -25,7 +25,7 @@
 ### SPM 安裝
 ```swift
 dependencies: [
-    .package(url: "https://github.com/William-Weng/WWByteReader", .upToNextMinor(from: "1.0.0"))
+    .package(url: "https://github.com/William-Weng/WWByteReader", .upToNextMinor(from: "1.0.2"))
 ]
 ```
 

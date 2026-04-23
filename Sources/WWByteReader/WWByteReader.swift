@@ -64,7 +64,7 @@ public extension WWByteReader {
             let value = try readUIntValue() as UInt
             return Int(bitPattern: value) as! T
         default:
-            fatalError("Unsupported Int type \(T.self)")
+            throw CustomError.unsupportedType(type: "\(T.self)")
         }
     }
 }
@@ -78,20 +78,20 @@ public extension WWByteReader {
         
         let size = MemoryLayout<T>.size
         
-        guard (offset + size) <= data.count else { throw NSError() }
+        guard (offset + size) <= data.count else { throw CustomError.bufferOverflow(offset: offset, size: size, count: data.count) }
         
         let bitPattern: UInt64
         
         switch size {
         case 4: bitPattern = try readUIntValue(size: 4)
         case 8: bitPattern = try readUIntValue(size: 8)
-        default: fatalError()
+        default: throw CustomError.unsupportedType(type: "\(T.self)")
         }
         
         switch size {
         case 4: return Float(bitPattern: UInt32(truncatingIfNeeded: bitPattern)) as! T
         case 8: return Double(bitPattern: bitPattern) as! T
-        default: fatalError()
+        default: throw CustomError.unsupportedType(type: "\(T.self)")
         }
     }
 }
@@ -103,7 +103,7 @@ public extension WWByteReader {
     /// - Returns: FixedWidthInteger
     mutating func readUIntValue<T: FixedWidthInteger>(size: Int) throws -> T {
         
-        if ((offset + size) > data.count)  { throw NSError() }
+        if ((offset + size) > data.count)  { throw CustomError.bufferOverflow(offset: offset, size: size, count: data.count) }
         
         let value = (0..<size).map { index in
             return T(data[offset + index]) << (8 * (size - index - 1))      // let b0 = UInt16(data[offset]) << 8
