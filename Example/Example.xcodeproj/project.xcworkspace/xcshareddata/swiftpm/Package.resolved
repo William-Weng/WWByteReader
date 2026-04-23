@@ -1,0 +1,15 @@
+{
+  "originHash" : "d2ed7007f6227ecb4f5db4c69b907825cfb5840a90749924765e14bd942d63a8",
+  "pins" : [
+    {
+      "identity" : "wwbytereader",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/William-Weng/WWByteReader",
+      "state" : {
+        "revision" : "ee88626a204b15d0d41814fd3007906fe28065b3",
+        "version" : "1.0.0"
+      }
+    }
+  ],
+  "version" : 3
+}

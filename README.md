@@ -29,6 +29,16 @@ dependencies: [
 ]
 ```
 
+### 內部參數
+
+| 參數名稱 | 說明 |
+|-----------|------|
+|  `readUIntValue()` | 讀取二進制無號數值 (UInt8 / UInt16 / UInt32 / UInt64)。 |
+|  `readUInt24Value()` | 讀取二進制無號數值 (UInt24)。 |
+|  `readUIntValue()` | 讀取二進制有號數值 (Int8 / Int16 / Int32 / Int64)。 |
+|  `readFloatingPoint()` | 讀取二進制讀取浮點數值 (Float / Double)。 |
+|  `readUIntValue(size:)` | 讀取二進制無號數值 (自訂取得位數)。 |
+
 ### 基本用法
 ```swift
 import WWByteReader

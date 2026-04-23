@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		811FB3942F98CC2000EA4466 /* WWByteReader in Frameworks */ = {isa = PBXBuildFile; productRef = 811FB3932F98CC2000EA4466 /* WWByteReader */; };
+		81A843752F99A83900748682 /* WWByteReader in Frameworks */ = {isa = PBXBuildFile; productRef = 81A843742F99A83900748682 /* WWByteReader */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,6 +42,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				811FB3942F98CC2000EA4466 /* WWByteReader in Frameworks */,
+				81A843752F99A83900748682 /* WWByteReader in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -84,6 +86,7 @@
 			name = Example;
 			packageProductDependencies = (
 				811FB3932F98CC2000EA4466 /* WWByteReader */,
+				81A843742F99A83900748682 /* WWByteReader */,
 			);
 			productName = Example;
 			productReference = 817EE1FE2EB1FA050036B57C /* Example.app */;
@@ -114,7 +117,7 @@
 			mainGroup = 817EE1F52EB1FA050036B57C;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				811FB3922F98CC2000EA4466 /* XCLocalSwiftPackageReference "../../@WWByteReader" */,
+				81A843732F99A83900748682 /* XCRemoteSwiftPackageReference "WWByteReader" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 817EE1FF2EB1FA050036B57C /* Products */;
@@ -357,16 +360,25 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCLocalSwiftPackageReference section */
-		811FB3922F98CC2000EA4466 /* XCLocalSwiftPackageReference "../../@WWByteReader" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = "../../@WWByteReader";
+/* Begin XCRemoteSwiftPackageReference section */
+		81A843732F99A83900748682 /* XCRemoteSwiftPackageReference "WWByteReader" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/William-Weng/WWByteReader";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 1.0.0;
+			};
 		};
-/* End XCLocalSwiftPackageReference section */
+/* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
 		811FB3932F98CC2000EA4466 /* WWByteReader */ = {
 			isa = XCSwiftPackageProductDependency;
+			productName = WWByteReader;
+		};
+		81A843742F99A83900748682 /* WWByteReader */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 81A843732F99A83900748682 /* XCRemoteSwiftPackageReference "WWByteReader" */;
 			productName = WWByteReader;
 		};
 /* End XCSwiftPackageProductDependency section */
