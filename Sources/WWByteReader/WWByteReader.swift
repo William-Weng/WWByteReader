@@ -5,9 +5,9 @@
 //  Created by William.Weng on 2026/04/23.
 //
 
-import UIKit
+import Foundation
 
-// MARK: - 無號數Int
+/// 一個簡單的二進位資料讀取器，用來讀取整數、浮點數
 public struct WWByteReader {
     
     public let data: Data

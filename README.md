@@ -25,19 +25,28 @@
 ### SPM 安裝
 ```swift
 dependencies: [
-    .package(url: "https://github.com/William-Weng/WWByteReader", .upToNextMinor(from: "1.1.0"))
+    .package(url: "https://github.com/William-Weng/WWByteReader", .upToNextMinor(from: "1.2.0"))
 ]
 ```
 
 ### 公開屬性
 
-| 參數名稱 | 說明 |
+| WWByteReader 參數名稱 | 說明 |
 |-----------|------|
+|  `data` | 要讀取的資料 |
+|  `offset` | 目前的偏移量 |
 |  `remainingCount` | 剩餘位元組數 |
+
+| WWByteWriter 參數名稱 | 說明 |
+|-----------|------|
+|  `data` | 已寫入的二進位資料本體 |
+|  `offset` | 目前寫入位置 |
+|  `count` | 目前已寫入的位元組數量 |
+|  `isEmpty` | 是否沒有任何資料 |
 
 ### 公開 API
 
-| 參數名稱 | 說明 |
+| WWByteReader API名稱 | 說明 |
 |-----------|------|
 |  `readUIntValue()` | 讀取二進制無號數值 (UInt8 / UInt16 / UInt32 / UInt64) |
 |  `readUInt24Value()` | 讀取二進制無號數值 (UInt24) |
@@ -45,6 +54,15 @@ dependencies: [
 |  `readFloatingPoint()` | 讀取二進制讀取浮點數值 (Float / Double) |
 |  `remainingData()` | 查看剩餘的 Data，但不移動 offset |
 |  `readRemainingData()` | 讀取剩下的 Data |
+
+| WWByteWriter API名稱 | 說明 |
+|-----------|------|
+|  `writeByte(_:)` | 寫入單一位元組 |
+|  `writeBytes(_:)` | 寫入位元組陣列 |
+|  `writeString(_:encoding:)` | 將字串依指定編碼轉成 `Data` 後寫入 |
+|  `reset()` | 清空已寫入資料並重設 offset |
+|  `writeData(_:)` | 寫入 `Data` |
+|  `writeInteger(_:endian:)` | 寫入固定寬度整數 |
 
 ### 基本用法
 ```swift
