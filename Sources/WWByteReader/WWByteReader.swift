@@ -23,6 +23,12 @@ public struct WWByteReader {
     }
 }
 
+// MARK: - 公開屬性
+public extension WWByteReader {
+    
+    var remainingCount: Int { max(0, data.count - offset) }     // 剩餘位元組數
+}
+
 // MARK: - 無號數Int
 public extension WWByteReader {
     
@@ -72,7 +78,7 @@ public extension WWByteReader {
 // MARK: - 浮點數 (Float / Double)
 public extension WWByteReader {
     
-    /// 讀取浮點數 (取值 => 對應浮點數)
+    /// 讀取浮點數 (取值 => 對應浮點數 / size: 4 => Float, size: 8 => Double)
     /// - Returns: BinaryFloatingPoint
     mutating func readFloatingPoint<T: BinaryFloatingPoint>() throws -> T {
         
@@ -80,18 +86,15 @@ public extension WWByteReader {
         
         guard (offset + size) <= data.count else { throw CustomError.bufferOverflow(offset: offset, size: size, count: data.count) }
         
-        let bitPattern: UInt64
-        
         switch size {
-        case 4: bitPattern = try readUIntValue(size: 4)
-        case 8: bitPattern = try readUIntValue(size: 8)
-        default: throw CustomError.unsupportedType(type: "\(T.self)")
-        }
-        
-        switch size {
-        case 4: return Float(bitPattern: UInt32(truncatingIfNeeded: bitPattern)) as! T
-        case 8: return Double(bitPattern: bitPattern) as! T
-        default: throw CustomError.unsupportedType(type: "\(T.self)")
+        case 4:
+            let bitPattern: UInt64 = try readUIntValue(size: 4)
+            return Float(bitPattern: UInt32(truncatingIfNeeded: bitPattern)) as! T
+        case 8:
+            let bitPattern: UInt64 = try readUIntValue(size: 8)
+            return Double(bitPattern: bitPattern) as! T
+        default:
+            throw CustomError.unsupportedType(type: "\(T.self)")
         }
     }
 }
@@ -114,5 +117,26 @@ public extension WWByteReader {
         offset += size
         
         return value
+    }
+}
+
+// MARK: - 讀取資料
+public extension WWByteReader {
+    
+    /// 查看剩餘的 Data，但不移動 offset
+    /// - Returns: 從目前 offset 到結尾的資料；若已在結尾，回傳空的 Data
+    func remainingData() throws -> Data {
+        if (offset > data.count) { throw CustomError.bufferOverflow(offset: offset, size: 0, count: data.count) }
+        return data.subdata(in: offset..<data.count)
+    }
+    
+    /// 讀取剩下的 Data
+    /// - Returns: 從目前 offset 到結尾的資料
+    mutating func readRemainingData() throws -> Data {
+                
+        let remainingData = try remainingData()
+        offset = data.count
+        
+        return remainingData
     }
 }

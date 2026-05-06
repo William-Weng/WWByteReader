@@ -25,19 +25,26 @@
 ### SPM 安裝
 ```swift
 dependencies: [
-    .package(url: "https://github.com/William-Weng/WWByteReader", .upToNextMinor(from: "1.0.2"))
+    .package(url: "https://github.com/William-Weng/WWByteReader", .upToNextMinor(from: "1.1.0"))
 ]
 ```
 
-### 內部參數
+### 公開屬性
 
 | 參數名稱 | 說明 |
 |-----------|------|
-|  `readUIntValue()` | 讀取二進制無號數值 (UInt8 / UInt16 / UInt32 / UInt64)。 |
-|  `readUInt24Value()` | 讀取二進制無號數值 (UInt24)。 |
-|  `readUIntValue()` | 讀取二進制有號數值 (Int8 / Int16 / Int32 / Int64)。 |
-|  `readFloatingPoint()` | 讀取二進制讀取浮點數值 (Float / Double)。 |
-|  `readUIntValue(size:)` | 讀取二進制無號數值 (自訂取得位數)。 |
+|  `remainingCount` | 剩餘位元組數 |
+
+### 公開 API
+
+| 參數名稱 | 說明 |
+|-----------|------|
+|  `readUIntValue()` | 讀取二進制無號數值 (UInt8 / UInt16 / UInt32 / UInt64) |
+|  `readUInt24Value()` | 讀取二進制無號數值 (UInt24) |
+|  `readUIntValue()` | 讀取二進制有號數值 (Int8 / Int16 / Int32 / Int64) |
+|  `readFloatingPoint()` | 讀取二進制讀取浮點數值 (Float / Double) |
+|  `remainingData()` | 查看剩餘的 Data，但不移動 offset |
+|  `readRemainingData()` | 讀取剩下的 Data |
 
 ### 基本用法
 ```swift
