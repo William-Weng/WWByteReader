@@ -12,7 +12,7 @@ public struct WWByteReader {
     
     public let data: Data
     public var offset: Int = 0
-    
+
     /// 初始化
     /// - Parameters:
     ///   - data: 要讀取的資料
@@ -78,21 +78,25 @@ public extension WWByteReader {
 // MARK: - 浮點數 (Float / Double)
 public extension WWByteReader {
     
-    /// 讀取浮點數 (取值 => 對應浮點數 / size: 4 => Float, size: 8 => Double)
+    /// 讀取浮點數 (取值 => 對應浮點數)
+    /// - Parameters:
+    ///   - endian: 位元組順序，預設為 big-endian
     /// - Returns: BinaryFloatingPoint
-    mutating func readFloatingPoint<T: BinaryFloatingPoint>() throws -> T {
+    mutating func readFloatingPoint<T: BinaryFloatingPoint>(endian: Endian = .big) throws -> T {
         
         let size = MemoryLayout<T>.size
         
         guard (offset + size) <= data.count else { throw CustomError.bufferOverflow(offset: offset, size: size, count: data.count) }
         
-        switch size {
-        case 4:
-            let bitPattern: UInt64 = try readUIntValue(size: 4)
-            return Float(bitPattern: UInt32(truncatingIfNeeded: bitPattern)) as! T
-        case 8:
-            let bitPattern: UInt64 = try readUIntValue(size: 8)
+        switch T.self {
+        case is Float.Type:
+            let bitPattern: UInt32 = try readUIntValue(size: 4, endian: endian)
+            return Float(bitPattern: bitPattern) as! T
+            
+        case is Double.Type:
+            let bitPattern: UInt64 = try readUIntValue(size: 8, endian: endian)
             return Double(bitPattern: bitPattern) as! T
+            
         default:
             throw CustomError.unsupportedType(type: "\(T.self)")
         }
@@ -103,15 +107,25 @@ public extension WWByteReader {
 public extension WWByteReader {
     
     /// 讀取二進制無號數值 (位移取值 + 累加)
+    /// - Parameters:
+    ///   - size: 位元數 (MemoryLayout<T>.size)
+    ///   - endian: 位元組順序，預設為 big-endian
     /// - Returns: FixedWidthInteger
-    mutating func readUIntValue<T: FixedWidthInteger>(size: Int) throws -> T {
+    mutating func readUIntValue<T: FixedWidthInteger>(size: Int, endian: Endian = .big) throws -> T {
         
         if ((offset + size) > data.count)  { throw CustomError.bufferOverflow(offset: offset, size: size, count: data.count) }
         
-        let value = (0..<size).map { index in
-            return T(data[offset + index]) << (8 * (size - index - 1))      // let b0 = UInt16(data[offset]) << 8
-        }.reduce(T(0)) { partialResult, number in
-            return partialResult | number                                   // b0 | b1
+        let value = (0..<size).reduce(T(0)) { partialResult, index in
+            
+            let byte = T(data[offset + index])
+            let shift: Int
+            
+            switch endian {
+            case .big: shift = 8 * (size - index - 1)
+            case .little: shift = 8 * index
+            }
+            
+            return partialResult | (byte << shift)
         }
         
         offset += size

@@ -25,7 +25,7 @@
 ### SPM 安裝
 ```swift
 dependencies: [
-    .package(url: "https://github.com/William-Weng/WWByteReader", .upToNextMinor(from: "1.2.0"))
+    .package(url: "https://github.com/William-Weng/WWByteReader", .upToNextMinor(from: "1.2.1"))
 ]
 ```
 
@@ -50,8 +50,9 @@ dependencies: [
 |-----------|------|
 |  `readUIntValue()` | 讀取二進制無號數值 (UInt8 / UInt16 / UInt32 / UInt64) |
 |  `readUInt24Value()` | 讀取二進制無號數值 (UInt24) |
-|  `readUIntValue()` | 讀取二進制有號數值 (Int8 / Int16 / Int32 / Int64) |
+|  `readIntValue()` | 讀取二進制有號數值 (Int8 / Int16 / Int32 / Int64) |
 |  `readFloatingPoint()` | 讀取二進制讀取浮點數值 (Float / Double) |
+|  `readUIntValue(size:endian:)` | 讀取二進制無號數值 (位移取值 + 累加 / 預設為 big-endian) |
 |  `remainingData()` | 查看剩餘的 Data，但不移動 offset |
 |  `readRemainingData()` | 讀取剩下的 Data |
 
@@ -62,7 +63,7 @@ dependencies: [
 |  `writeString(_:encoding:)` | 將字串依指定編碼轉成 `Data` 後寫入 |
 |  `reset()` | 清空已寫入資料並重設 offset |
 |  `writeData(_:)` | 寫入 `Data` |
-|  `writeInteger(_:endian:)` | 寫入固定寬度整數 |
+|  `writeInteger(_:endian:)` | 寫入固定寬度整數 (預設為 little-endian) |
 
 ### 基本用法
 ```swift

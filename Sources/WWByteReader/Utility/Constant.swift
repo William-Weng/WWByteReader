@@ -7,6 +7,12 @@
 
 import UIKit
 
+// MARK: - typealias
+public extension WWByteReader {
+    
+    typealias Endian = WWByteWriter.Endian                          // 多位元組整數的位元組排列方式
+}
+
 // MARK: - enum
 public extension WWByteReader {
     
