@@ -69,8 +69,8 @@ public extension WWByteWriter {
     
     /// 寫入固定寬度整數 => 這個方法可用於寫入所有符合 `FixedWidthInteger` 的整數型別
     ///   - value: 要寫入的整數值。
-    ///   - endian: 位元組順序，預設為 little-endian。
-    mutating func writeInteger<T: FixedWidthInteger>(_ value: T, endian: Endian = .little) {
+    ///   - endian: 位元組順序，預設為 big-endian。
+    mutating func writeInteger<T: FixedWidthInteger>(_ value: T, endian: Endian = .big) {
         
         let encodedValue: T
         

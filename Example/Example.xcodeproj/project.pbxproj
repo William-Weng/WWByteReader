@@ -8,7 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		3DE1620D2FAF69CE00745021 /* WWByteReader in Frameworks */ = {isa = PBXBuildFile; productRef = 3DE1620C2FAF69CE00745021 /* WWByteReader */; };
-		3DE162102FAF71DC00745021 /* WWByteReader in Frameworks */ = {isa = PBXBuildFile; productRef = 3DE1620F2FAF71DC00745021 /* WWByteReader */; };
+		811CEB9E2FB3222D0054326C /* WWByteReader in Frameworks */ = {isa = PBXBuildFile; productRef = 811CEB9D2FB3222D0054326C /* WWByteReader */; };
+		811CEBA12FB322610054326C /* WWByteReader in Frameworks */ = {isa = PBXBuildFile; productRef = 811CEBA02FB322610054326C /* WWByteReader */; };
 		811FB3942F98CC2000EA4466 /* WWByteReader in Frameworks */ = {isa = PBXBuildFile; productRef = 811FB3932F98CC2000EA4466 /* WWByteReader */; };
 		818BB9032FAAF1A80022CBAE /* WWByteReader in Frameworks */ = {isa = PBXBuildFile; productRef = 818BB9022FAAF1A80022CBAE /* WWByteReader */; };
 		818BB9482FAB103C0022CBAE /* WWByteReader in Frameworks */ = {isa = PBXBuildFile; productRef = 818BB9472FAB103C0022CBAE /* WWByteReader */; };
@@ -46,11 +47,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				811FB3942F98CC2000EA4466 /* WWByteReader in Frameworks */,
-				3DE162102FAF71DC00745021 /* WWByteReader in Frameworks */,
+				811CEB9E2FB3222D0054326C /* WWByteReader in Frameworks */,
 				818BB9482FAB103C0022CBAE /* WWByteReader in Frameworks */,
 				818BB9032FAAF1A80022CBAE /* WWByteReader in Frameworks */,
 				3DE1620D2FAF69CE00745021 /* WWByteReader in Frameworks */,
 				81FB74F72F99EA4300480F20 /* WWByteReader in Frameworks */,
+				811CEBA12FB322610054326C /* WWByteReader in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -98,7 +100,8 @@
 				818BB9022FAAF1A80022CBAE /* WWByteReader */,
 				818BB9472FAB103C0022CBAE /* WWByteReader */,
 				3DE1620C2FAF69CE00745021 /* WWByteReader */,
-				3DE1620F2FAF71DC00745021 /* WWByteReader */,
+				811CEB9D2FB3222D0054326C /* WWByteReader */,
+				811CEBA02FB322610054326C /* WWByteReader */,
 			);
 			productName = Example;
 			productReference = 817EE1FE2EB1FA050036B57C /* Example.app */;
@@ -129,7 +132,7 @@
 			mainGroup = 817EE1F52EB1FA050036B57C;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				3DE1620E2FAF71DC00745021 /* XCRemoteSwiftPackageReference "WWByteReader" */,
+				811CEB9F2FB322610054326C /* XCRemoteSwiftPackageReference "WWByteReader" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 817EE1FF2EB1FA050036B57C /* Products */;
@@ -373,12 +376,12 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		3DE1620E2FAF71DC00745021 /* XCRemoteSwiftPackageReference "WWByteReader" */ = {
+		811CEB9F2FB322610054326C /* XCRemoteSwiftPackageReference "WWByteReader" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/William-Weng/WWByteReader";
 			requirement = {
 				kind = upToNextMinorVersion;
-				minimumVersion = 1.2.0;
+				minimumVersion = 1.2.1;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -388,9 +391,13 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = WWByteReader;
 		};
-		3DE1620F2FAF71DC00745021 /* WWByteReader */ = {
+		811CEB9D2FB3222D0054326C /* WWByteReader */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 3DE1620E2FAF71DC00745021 /* XCRemoteSwiftPackageReference "WWByteReader" */;
+			productName = WWByteReader;
+		};
+		811CEBA02FB322610054326C /* WWByteReader */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 811CEB9F2FB322610054326C /* XCRemoteSwiftPackageReference "WWByteReader" */;
 			productName = WWByteReader;
 		};
 		811FB3932F98CC2000EA4466 /* WWByteReader */ = {
