@@ -38,5 +38,6 @@ public extension WWByteWriter {
     /// 自定義錯誤
     enum CustomError: Error {
         case stringEncodingFail                                     // 字串無法使用指定編碼轉成 `Data`
+        case dataOverflow                                           // 字串長度超出 `UInt16.max`
     }
 }

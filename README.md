@@ -25,7 +25,7 @@
 ### SPM 安裝
 ```swift
 dependencies: [
-    .package(url: "https://github.com/William-Weng/WWByteReader", .upToNextMinor(from: "1.2.2"))
+    .package(url: "https://github.com/William-Weng/WWByteReader", .upToNextMinor(from: "1.2.3"))
 ]
 ```
 
@@ -61,6 +61,7 @@ dependencies: [
 |  `writeByte(_:)` | 寫入單一位元組 |
 |  `writeBytes(_:)` | 寫入位元組陣列 |
 |  `writeString(_:encoding:)` | 將字串依指定編碼轉成 `Data` 後寫入 |
+|  `writeLengthPrefixedString(_:encoding:)` | 將字串寫成 `[長度: UInt16, 字串資料]` 格式 |
 |  `reset()` | 清空已寫入資料並重設 offset |
 |  `writeData(_:)` | 寫入 `Data` |
 |  `writeInteger(_:endian:)` | 寫入固定寬度整數 (預設為 big-endian) |

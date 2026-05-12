@@ -51,6 +51,22 @@ public extension WWByteWriter {
         writeData(value)
     }
     
+    /// 將字串寫成 [長度: UInt16, 字串資料] 格式
+    /// - Parameters:
+    ///   - string: 要寫入的字串
+    ///   - encoding: 字串編碼，預設 UTF-8
+    /// - Throws:
+    ///   - `CustomError.stringEncodingFail`：當字串無法轉成指定編碼
+    ///   - `CustomError.dataOverflow`：當字串資料長度超過 UInt16 可表示範圍
+    mutating func writeLengthPrefixedString(_ string: String, encoding: String.Encoding = .utf8) throws {
+        
+        guard let value = string.data(using: encoding) else { throw CustomError.stringEncodingFail }
+        guard value.count <= Int(UInt16.max) else { throw CustomError.dataOverflow }
+        
+        writeInteger(UInt16(value.count))
+        writeData(value)
+    }
+    
     /// 清空已寫入資料並重設 offset
     mutating func reset() {
         data.removeAll(keepingCapacity: false)
