@@ -103,8 +103,61 @@ public extension WWByteReader {
     }
 }
 
+public extension WWByteReader {
+    
+    /// 讀取指定長度的字串資料。
+    /// - Parameters:
+    ///   - count: 要讀取的位元組數。
+    ///   - encoding: 字串編碼，預設為 UTF-8。
+    /// - Throws:
+    ///   - `CustomError.readOverflow`：當可讀取的資料不足時。
+    ///   - `CustomError.stringDecodingFail`：當資料無法轉成字串時。
+    /// - Returns: 解碼後的字串。
+    mutating func readString(count: Int, encoding: String.Encoding = .utf8) throws -> String {
+        
+        let value = try readData(count: count)
+        
+        guard let string = String(data: value, encoding: encoding) else { throw CustomError.stringDecodingFail }
+        
+        return string
+    }
+    
+    /// 讀取一段以長度前綴表示的字串資料 => 會先讀取指定型別的長度值，再依該長度讀取對應數量的位元組，最後使用指定編碼轉換成 `String`。
+    /// - Parameters:
+    ///   - encoding: 字串解碼格式，預設為 UTF-8。
+    ///   - lengthType: 長度前綴的整數型別，預設為 `UInt16`。
+    /// - Throws:
+    ///   - `CustomError.readOverflow`：當可讀取的資料長度不足時。
+    ///   - `CustomError.stringDecodingFail`：當資料無法使用指定編碼轉成字串時。
+    ///   - 其他由 `readUIntValue()` 或 `readData(count:)` 拋出的錯誤。
+    /// - Returns: 解碼後的字串。
+    mutating func readLengthPrefixedString<T: FixedWidthInteger & UnsignedInteger>(encoding: String.Encoding = .utf8, lengthType: T.Type = UInt16.self) throws -> String {
+        
+        _ = lengthType
+        
+        let length: T = try readUIntValue()
+        let count = Int(length)
+
+        return try readString(count: count, encoding: encoding)
+    }
+}
+
 // MARK: - 核心程式
 public extension WWByteReader {
+
+    /// 讀取指定長度的原始資料 => 會從目前讀取位置擷取指定數量的位元組，並同步更新內部偏移量 `offset`。
+    /// - Parameter count: 要讀取的資料長度（位元組數）。
+    /// - Throws: `CustomError.readOverflow`，當剩餘資料不足指定長度時。
+    /// - Returns: 擷取出的 `Data`。
+    mutating func readData(count: Int) throws -> Data {
+        
+        guard offset + count <= data.count else { throw CustomError.readOverflow }
+        
+        let value = data.subdata(in: offset ..< offset + count)
+        offset += count
+        
+        return value
+    }
     
     /// 讀取二進制無號數值 (位移取值 + 累加)
     /// - Parameters:

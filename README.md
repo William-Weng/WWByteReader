@@ -8,24 +8,36 @@
 
 ## 🎉 [相關說明](https://qoaformat.org/qoa-specification.pdf)
 
-> A high-performance **big-endian binary reader** designed for audio and video format parsing. It uses a unified shift-and-OR approach to read all data types, with full support for **Int, UInt, Float, and Double**.
+> WWByteReader / WWByteWriter is a high-performance big-endian binary reader and writer for parsing and serializing binary data. It is designed for audio/video formats, network packets, and other structured binary payloads, using a unified shift-and-OR approach to process primitive values consistently.
+>
+> It provides complete support for reading and writing Int, UInt, Float, Double, Data, String, and length-prefixed String, making it suitable for both fixed-size fields and variable-length binary content.
 
-> 高效能 **Big-Endian 二進制讀取器**，專為音頻/視頻格式解析設計。統一用位移 + OR 操作讀取所有類型，完美支援 **Int/UInt/Float/Double**。
+> WWByteReader / WWByteWriter 是一組高效能的 Big-Endian 二進位讀寫器，可用於二進位資料的解析與序列化。適合音訊 / 影片格式、網路封包，以及其他具結構性的 binary payload，並以統一的位移加上 OR 策略處理基礎數值型別。
+>
+> 目前完整支援讀寫 Int、UInt、Float、Double、Data、String，以及長度前綴字串，因此同時適合固定長度欄位與可變長度的二進位內容。
+
+## ✨ Features
+
+- 🎯 Big-endian binary reading and writing for structured data.
+- 🚀 Unified handling for primitive numeric types with a consistent byte-processing model.
+- ✅ Supports both fixed-length values and variable-length payloads.
+- 🛡️ Built-in support for raw Data, encoded String, and length-prefixed String.
+- 📦 Suitable for file parsing, binary protocols, and custom packet formats.
 
 ## ✨ 核心特色
 
-- 🎯 **Big-Endian 統一處理**：所有類型都走同一個位移核心
-- 🚀 **高性能**：純位移運算，SIMD 友好，零分配
-- ✅ **類型安全**：泛型 + protocol 約束，編譯期檢查
-- 🛡️ **越界保護**：自動檢查 + `throws`
-- 📦 **零依賴**：純 Swift，無外部框架
+- 🎯 支援以 Big-Endian 方式讀寫具結構性的二進位資料。
+- 🚀 對基礎數值型別採用一致的位元組處理模型，行為統一。
+- ✅ 同時支援固定長度欄位與可變長度 payload。
+- 🛡️ 內建支援原始 Data、指定編碼的 String，以及長度前綴字串。
+- 📦 適合檔案格式解析、binary protocol 與自訂封包格式。
 
 ## 🚀 快速開始
 
 ### SPM 安裝
 ```swift
 dependencies: [
-    .package(url: "https://github.com/William-Weng/WWByteReader", .upToNextMinor(from: "1.2.3"))
+    .package(url: "https://github.com/William-Weng/WWByteReader", .upToNextMinor(from: "1.3.0"))
 ]
 ```
 
@@ -53,6 +65,9 @@ dependencies: [
 |  `readIntValue()` | 讀取二進制有號數值 (Int8 / Int16 / Int32 / Int64) |
 |  `readFloatingPoint()` | 讀取二進制讀取浮點數值 (Float / Double) |
 |  `readUIntValue(size:endian:)` | 讀取二進制無號數值 (位移取值 + 累加 / 預設為 big-endian) |
+|  `readData(count:)` | 讀取指定長度的原始資料 |
+|  `readString(count:encoding:)`| 讀取指定長度的字串資料 |
+|  `readLengthPrefixedString(encoding:lengthType:)` | 讀取一段以長度前綴表示的字串資料 |
 |  `remainingData()` | 查看剩餘的 Data，但不移動 offset |
 |  `readRemainingData()` | 讀取剩下的 Data |
 
@@ -60,8 +75,8 @@ dependencies: [
 |-----------|------|
 |  `writeByte(_:)` | 寫入單一位元組 |
 |  `writeBytes(_:)` | 寫入位元組陣列 |
-|  `writeString(_:encoding:)` | 將字串依指定編碼轉成 `Data` 後寫入 |
-|  `writeLengthPrefixedString(_:encoding:)` | 將字串寫成 `[長度: UInt16, 字串資料]` 格式 |
+|  `writeString(_:encoding:maxLength:)` | 將字串依指定編碼轉成 `Data` 後寫入 |
+|  `writeLengthPrefixedString(_:encoding:lengthType:)` | 將字串寫成 `[長度: UInt16, 字串資料]` 格式 |
 |  `reset()` | 清空已寫入資料並重設 offset |
 |  `writeData(_:)` | 寫入 `Data` |
 |  `writeInteger(_:endian:)` | 寫入固定寬度整數 (預設為 big-endian) |
@@ -124,10 +139,10 @@ final class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        readVData()
+        readData()
     }
     
-    func readVData() {
+    func readData() {
         
         do {
             var reader = WWByteReader(data: testData)
@@ -145,6 +160,32 @@ final class ViewController: UIViewController {
             print("Error:", error)
         }
     }
+    
+    func writeData() {
+        
+        do {
+            var writer = WWByteWriter()
+            
+            writer.writeInteger(UInt32(1024))
+            try writer.writeString("WWDC", encoding: .utf8)
+            try writer.writeLengthPrefixedString("Hello World", lengthType: UInt16.self)
+            
+            let data = writer.data
+            var reader = WWByteReader(data: data)
+            
+            let value: UInt32 = try reader.readUIntValue()
+            let text = try reader.readString(count: 4, encoding: .utf8)
+            let message = try reader.readLengthPrefixedString(lengthType: UInt16.self)
+            
+            print("value = \(value)")       // 1024
+            print("text = \(text)")         // WWDC
+            print("message = \(message)")   // Hello World
+
+        } catch {
+            print("Error:", error)
+        }
+    }
+
 }
 ```
 

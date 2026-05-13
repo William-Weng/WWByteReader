@@ -20,10 +20,11 @@ final class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        readVData()
+        readData()
+        writeData()
     }
     
-    func readVData() {
+    func readData() {
         
         do {
             var reader = WWByteReader(data: testData)
@@ -37,6 +38,31 @@ final class ViewController: UIViewController {
             print("UInt32 =", uint32)   // 256
             print("Float =", float)     // 3.1415927
             print("Double =", double)   // 3.141592653589793
+        } catch {
+            print("Error:", error)
+        }
+    }
+    
+    func writeData() {
+        
+        do {
+            var writer = WWByteWriter()
+            
+            writer.writeInteger(UInt32(1024))
+            try writer.writeString("WWDC", encoding: .utf8)
+            try writer.writeLengthPrefixedString("Hello World", lengthType: UInt16.self)
+            
+            let data = writer.data
+            var reader = WWByteReader(data: data)
+            
+            let value: UInt32 = try reader.readUIntValue()
+            let text = try reader.readString(count: 4, encoding: .utf8)
+            let message = try reader.readLengthPrefixedString(lengthType: UInt16.self)
+            
+            print("value = \(value)")       // 1024
+            print("text = \(text)")         // WWDC
+            print("message = \(message)")   // Hello World
+
         } catch {
             print("Error:", error)
         }

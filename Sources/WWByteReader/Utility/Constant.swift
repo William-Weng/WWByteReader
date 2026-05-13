@@ -20,6 +20,8 @@ public extension WWByteReader {
     enum CustomError: Error {
         case unsupportedType(type: String)                          // 不支援類型
         case bufferOverflow(offset: Int, size: Int, count: Int)     // 資料溢位
+        case readOverflow                                           // 讀取資料超出設整大小
+        case stringDecodingFail                                     // 字串編碼錯誤 `UTF-8`
     }
 }
 

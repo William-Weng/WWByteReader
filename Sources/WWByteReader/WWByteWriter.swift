@@ -39,15 +39,18 @@ public extension WWByteWriter {
     mutating func writeBytes(_ values: [UInt8]) {
         writeData(Data(values))
     }
-    
+        
     /// 將字串依指定編碼轉成 `Data` 後寫入
     /// - Parameters:
     ///   - string: 要寫入的字串
     ///   - encoding: 字串編碼，預設 UTF-8
+    ///   - count: 資料最大數量，預設 UInt16.max
     /// - Throws: `CustomError.stringEncodingFail`，當字串無法使用指定編碼轉成資料時
-    mutating func writeString(_ string: String, encoding: String.Encoding = .utf8) throws {
+    mutating func writeString(_ string: String, encoding: String.Encoding = .utf8, maxLength: Int = Int(UInt16.max)) throws {
         
         guard let value = string.data(using: encoding) else { throw CustomError.stringEncodingFail }
+        guard value.count <= maxLength else { throw CustomError.dataOverflow }
+        
         writeData(value)
     }
     
@@ -55,15 +58,16 @@ public extension WWByteWriter {
     /// - Parameters:
     ///   - string: 要寫入的字串
     ///   - encoding: 字串編碼，預設 UTF-8
+    ///   - lengthType: 長度數字的編碼，預設 UInt16.self
     /// - Throws:
     ///   - `CustomError.stringEncodingFail`：當字串無法轉成指定編碼
     ///   - `CustomError.dataOverflow`：當字串資料長度超過 UInt16 可表示範圍
-    mutating func writeLengthPrefixedString(_ string: String, encoding: String.Encoding = .utf8) throws {
+    mutating func writeLengthPrefixedString<T: FixedWidthInteger & UnsignedInteger>(_ string: String, encoding: String.Encoding = .utf8, lengthType: T.Type = UInt16.self) throws {
         
         guard let value = string.data(using: encoding) else { throw CustomError.stringEncodingFail }
-        guard value.count <= Int(UInt16.max) else { throw CustomError.dataOverflow }
+        guard let length = T(exactly: value.count) else { throw CustomError.dataOverflow }
         
-        writeInteger(UInt16(value.count))
+        writeInteger(length)
         writeData(value)
     }
     

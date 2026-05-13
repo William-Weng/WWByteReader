@@ -6,8 +6,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/William-Weng/WWByteReader",
       "state" : {
-        "revision" : "8f4bb67161ca275b7f64125f5d40361bf6368244",
-        "version" : "1.2.2"
+        "revision" : "94d1f1eb0081e26b2083a6468a059a05a9f2c0c7",
+        "version" : "1.2.3"
       }
     }
   ],
